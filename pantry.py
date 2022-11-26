@@ -1,9 +1,4 @@
 
-# Assignment requirements.
-"""Your software must demonstrate 
-the ability to insert, modify, delete,
- and retrieve (or query) data."""
-
 # Basic Imports.
 from select import select
 import firebase_admin
@@ -56,7 +51,7 @@ def main():
         selection = getInput()
         
 
-# ✅
+# 
 def getInput():
     # Menu.
     
@@ -69,7 +64,7 @@ def getInput():
     selection = int(input("-- "))
     return selection
 
-# ✅
+# 
 def addItem(collection_name, db):
 
     # Get item.
@@ -86,11 +81,13 @@ def addItem(collection_name, db):
     expiration = datetime.datetime(year, month, day)
     db.collection(collection_name).document(item_name).set({"item": item_name, "expirationDate": expiration})
 
-# ✅ 
+# 
 def displayItems(collection_name, db):
     expired_docs = db.collection("Near Expiration").get()
     sorted_expired_docs = orderByDateTime("Near Expiration", db)
     print("\n\nITEMS TO EXPIRE SOON! ")
+    if len(expired_docs) == 0:
+        print("None")
     for doc in sorted_expired_docs:
         dictionary = doc.to_dict()
         print(f"  * {dictionary['item']}")
@@ -127,13 +124,13 @@ def if_expired(collection_name, db):
             db.collection("Near Expiration").document(dictionary["item"]).set(dictionary)
     
 
-# ✅ 
+# 
 def deleteItem(collection_name, db):
     item_name = input("Item to be deleted: ")
     db.collection(collection_name).document(item_name).delete()
 ### Cloud Messaging -> notifacations to operating system 
 
-# ✅ 
+# 
 def orderByDateTime(collection_name, db):
     cities_ref = db.collection(collection_name)
     query = cities_ref.order_by("expirationDate")
